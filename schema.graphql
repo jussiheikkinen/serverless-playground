@@ -1,0 +1,18 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query {
+    helloWorld: String
+    greetings(input: HelloInput!): String!
+}
+
+type Mutation {
+    updateGreetings(input: HelloInput!): String!
+}
+
+input HelloInput {
+    firstName: String!
+    lastName: String
+}

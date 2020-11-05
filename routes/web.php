@@ -1,5 +1,12 @@
 <?php
 
+use App\Http\Controllers\RootValueController;
+use GraphQL\GraphQL;
+use GraphQL\Type\Schema;
+use GraphQL\Utils\BuildSchema;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 /** @var \Laravel\Lumen\Routing\Router $router */
 
 /*
@@ -17,6 +24,42 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->get('/test', function () {
-    return "Hello, world!";
+$router->post('/graphql', function (Request $request) {
+    // $typeConfigDecorator = function($typeConfig, $typeDefinitionNode) {
+    //     $name = $typeConfig['name'];
+    //     // ... add missing options to $typeConfig based on type $name
+    //     return $typeConfig;
+    // };
+
+    $contents = file_get_contents('../schema.graphql');
+    $schema = BuildSchema::build($contents);
+
+    $query = $request->json('query');
+    $variableValues = $request->json('variables', null);
+    $operationName = $request->json('operationName', null);
+
+    Log::debug($request);
+
+    try {
+        $result = GraphQL::executeQuery(
+            $schema,
+            $query,
+            RootValueController::getRootValues(), // root values -> resolvers
+            null, // context
+            $variableValues,
+            $operationName
+        );
+        $output = $result->toArray();
+    } catch (\Exception $e) {
+        print_r($e->getMessage());
+        $output = [
+            'errors' => [
+                [
+                    'message' => $e->getMessage()
+                ]
+            ]
+        ];
+    }
+
+    return response()->json($output);
 });
