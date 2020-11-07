@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\RootValueController;
+use App\Http\Controllers\GraphqlController;
 use GraphQL\GraphQL;
 use GraphQL\Type\Schema;
 use GraphQL\Utils\BuildSchema;
@@ -25,15 +25,8 @@ $router->get('/', function () use ($router) {
 });
 
 $router->post('/graphql', function (Request $request) {
-    // $typeConfigDecorator = function($typeConfig, $typeDefinitionNode) {
-    //     $name = $typeConfig['name'];
-    //     // ... add missing options to $typeConfig based on type $name
-    //     return $typeConfig;
-    // };
-
     $contents = file_get_contents('../schema.graphql');
     $schema = BuildSchema::build($contents);
-
     $query = $request->json('query');
     $variableValues = $request->json('variables', null);
     $operationName = $request->json('operationName', null);
@@ -44,7 +37,7 @@ $router->post('/graphql', function (Request $request) {
         $result = GraphQL::executeQuery(
             $schema,
             $query,
-            RootValueController::getRootValues(), // root values -> resolvers
+            GraphqlController::getRootValues(), // root values -> resolvers
             null, // context
             $variableValues,
             $operationName

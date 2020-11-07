@@ -1,18 +1,36 @@
+interface Node {
+    id: ID!
+}
+
 schema {
     query: Query
     mutation: Mutation
 }
 
 type Query {
-    helloWorld: String
-    greetings(input: HelloInput!): String!
+    node(id: ID!): Node
+    records(genre: String): [Record]
 }
 
 type Mutation {
-    updateGreetings(input: HelloInput!): String!
+    deleteRecord(id: ID): Boolean
 }
 
-input HelloInput {
-    firstName: String!
-    lastName: String
+"""
+A music record
+"""
+type Record implements Node {
+    id: ID!
+    name: String
+    artist: Artist
+    coverArt: String
+    timestamp: Int
 }
+
+"""
+The creator of a record
+"""
+type Artist {
+    name: String
+}
+
