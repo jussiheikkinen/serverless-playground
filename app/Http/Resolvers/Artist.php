@@ -2,8 +2,7 @@
 
 namespace App\Http\Resolvers;
 
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\GraphqlController;
 
 class Artist implements Resolver
 {
@@ -13,8 +12,7 @@ class Artist implements Resolver
 
     public static function getArtist($needle)
     {
-        $fileContents = Storage::disk()->get('fakedata.json');
-        $data = json_decode($fileContents, true);
+        $data = GraphqlController::getData();
         if (!empty($data)) {
             foreach($data['artists'] as $k => $value) {
                 if ($value['id'] === $needle) {
@@ -27,9 +25,9 @@ class Artist implements Resolver
 
     public function resolve($artist, $args, $context, $info)
     {
-        $selectionSet = $info->getFieldSelection(1);
-        foreach($selectionSet['artist'] as $fieldName => $val) {
+        foreach(GraphqlController::getSelectionSet($info, 'artist') as $fieldName => $val) {
             $method = 'resolve' . ucfirst($fieldName);
+
             if (method_exists($this, $method)) {
                 $this->{$fieldName} = $this->{$method}($artist, $args, $context, $info);
             } else {
@@ -40,5 +38,12 @@ class Artist implements Resolver
         }
 
         return $this;
+    }
+
+    private function resolveMembers($artist, $args, $context, $info)
+    {
+        return array_map(function ($member) use ($args, $context, $info) {
+            return (new Member())->resolve((object)$member, $args, $context, $info);
+        }, $artist->members);
     }
 }

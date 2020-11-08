@@ -16,6 +16,8 @@ package:
         - resources/assets/**
         - storage/**
         - tests/**
+    include:
+        - storage/fakedata.json
 
 functions:
     # This function runs the Laravel website/API

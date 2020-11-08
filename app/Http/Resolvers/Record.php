@@ -2,8 +2,7 @@
 
 namespace App\Http\Resolvers;
 
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\GraphqlController;
 
 class Record implements Resolver
 {
@@ -15,8 +14,7 @@ class Record implements Resolver
 
     public static function getRecords($args)
     {
-        $fileContents = Storage::disk()->get('fakedata.json');
-        $data = json_decode($fileContents, true);
+        $data = GraphqlController::getData();
         if (!empty($data)) {
             return $data['records'][$args['genre']] ?? [];
         }
@@ -25,7 +23,7 @@ class Record implements Resolver
 
     public function resolve($record, $args, $context, $info)
     {
-        foreach($info->getFieldSelection() as $fieldName => $val) {
+        foreach(GraphqlController::getSelectionSet($info, 'records') as $fieldName => $val) {
             $method = 'resolve' . ucfirst($fieldName);
 
             if (method_exists($this, $method)) {
@@ -40,7 +38,7 @@ class Record implements Resolver
         return $this;
     }
 
-    public function resolveCoverArt($record, $args, $context, $info)
+    private function resolveCoverArt($record, $args, $context, $info)
     {
         return "../assets/{$record['coverArt']}";
     }

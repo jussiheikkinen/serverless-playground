@@ -6,6 +6,7 @@ use GraphQL\Type\Schema;
 use GraphQL\Utils\BuildSchema;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
@@ -24,6 +25,15 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+$router->get('/test-json', function () use ($router) {
+    try {
+        //return file_get_contents('../storage/fakedata.json');
+        return GraphqlController::getData();
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
+});
+
 $router->post('/graphql', function (Request $request) {
     $contents = file_get_contents('../schema.graphql');
     $schema = BuildSchema::build($contents);
@@ -31,7 +41,7 @@ $router->post('/graphql', function (Request $request) {
     $variableValues = $request->json('variables', null);
     $operationName = $request->json('operationName', null);
 
-    Log::debug($request);
+    // Log::debug($request);
 
     try {
         $result = GraphQL::executeQuery(

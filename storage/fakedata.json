@@ -1,0 +1,87 @@
+{
+    "records": {
+        "progressive": [
+            {
+                "id": "we1",
+                "artist_id": 3,
+                "name": "whirlwind",
+                "timestamp": 34534532324,
+                "coverArt": "dawd_4324.png"
+            },
+            {
+                "id": "we1",
+                "artist_id": 1,
+                "name": "selling_england_by_the_pound",
+                "timestamp": 34534532324,
+                "coverArt": "dawd_4324.png"
+            }
+        ],
+        "pop": [
+            {
+                "id": "we1",
+                "artist_id": 2,
+                "name": "white_album",
+                "timestamp": 34534532324,
+                "coverArt": "dawd_4324.png"
+            },
+            {
+                "id": "we1",
+                "artist_id": 1,
+                "name": "genesis",
+                "timestamp": 34534532324,
+                "coverArt": "dawd_4324.png"
+            }
+        ]
+    },
+    "artists": [
+        {
+            "id": 1,
+            "name": "genesis",
+            "members": [
+                {
+                    "name": "Phil Collins",
+                    "birthday": 3123213,
+                    "instruments": [
+                        { "name": "Drums" },
+                        { "name": "Vocal" }
+                    ]
+                },
+                {
+                    "name": "Steve Hacket",
+                    "birthday": 3123213,
+                    "instruments": [
+                        { "name": "Guitar" }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "beatles",
+            "members": [
+                {
+                    "name": "John Lennon",
+                    "birthday": 3123213
+                },
+                {
+                    "name": "Paul McCartney",
+                    "birthday": 3123213
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "transatlantic",
+            "members": [
+                {
+                    "name": "Mike Portnoy",
+                    "birthday": 3123213
+                },
+                {
+                    "name": "Roine Stolt",
+                    "birthday": 3123213
+                }
+            ]
+        }
+    ]
+}

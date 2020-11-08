@@ -10,6 +10,7 @@ schema {
 type Query {
     node(id: ID!): Node
     records(genre: String): [Record]
+    artists: [Artist]
 }
 
 type Mutation {
@@ -30,7 +31,25 @@ type Record implements Node {
 """
 The creator of a record
 """
-type Artist {
+type Artist implements Node {
+    id: ID!
+    name: String
+    members: [Person]
+}
+
+"""
+A person. In this case a band member
+"""
+type Person {
+    name: String
+    birthday: Int
+    instruments: [Instrument]
+}
+
+"""
+A musical instrument
+"""
+type Instrument {
     name: String
 }
 
