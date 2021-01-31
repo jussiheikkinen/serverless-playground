@@ -18,7 +18,8 @@ class NoCors
     {
         $allowedDomains = array("http://localhost:3000");
         $origin = $request->server('HTTP_ORIGIN');
-        if(in_array($origin, $allowedDomains)){
+
+        //if(in_array($origin, $allowedDomains)){
             //Intercepts OPTIONS requests
             if($request->isMethod('OPTIONS')) {
                 $response = response('', 200);
@@ -30,7 +31,7 @@ class NoCors
             $response->header('Access-Control-Allow-Origin', $origin);
             $response->header('Access-Control-Allow-Methods', 'OPTIONS, HEAD, GET, POST, PUT, PATCH, DELETE');
             $response->header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'));
-        }
+        //}
 
         // Sends it
         return $response;

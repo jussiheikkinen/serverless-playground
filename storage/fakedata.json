@@ -2,14 +2,14 @@
     "records": {
         "progressive": [
             {
-                "id": "we1",
+                "id": 1,
                 "artist_id": 3,
                 "name": "whirlwind",
                 "timestamp": 34534532324,
                 "coverArt": "dawd_4324.png"
             },
             {
-                "id": "we1",
+                "id": 2,
                 "artist_id": 1,
                 "name": "selling_england_by_the_pound",
                 "timestamp": 34534532324,
@@ -18,14 +18,14 @@
         ],
         "pop": [
             {
-                "id": "we1",
+                "id": 3,
                 "artist_id": 2,
                 "name": "white_album",
                 "timestamp": 34534532324,
                 "coverArt": "dawd_4324.png"
             },
             {
-                "id": "we1",
+                "id": 4,
                 "artist_id": 1,
                 "name": "genesis",
                 "timestamp": 34534532324,
