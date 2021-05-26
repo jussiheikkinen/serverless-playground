@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GraphqlController;
+use App\Http\TypeResolvers\RecordResolver;
 use GraphQL\GraphQL;
 use GraphQL\Type\Schema;
 use GraphQL\Utils\BuildSchema;
@@ -35,8 +36,25 @@ $router->get('/test-json', function () use ($router) {
 });
 
 $router->post('/graphql', function (Request $request) {
+    $typeConfigDecorator = function($typeConfig, $typeDefinitionNode) {
+        $name = $typeConfig['name'];
+
+        switch($name) {
+            case 'RecordOfficial':
+                $typeConfig['resolveField'] = function ($value, $args, $context, $info) {
+                    return (new RecordResolver())->resolve($value, $args, $context, $info);
+                };
+                break;
+            default:
+                break;
+        }
+
+        return $typeConfig;
+    };
+
     $contents = file_get_contents('../schema.graphql');
-    $schema = BuildSchema::build($contents);
+    $schema = BuildSchema::build($contents, $typeConfigDecorator);
+
     $query = $request->json('query');
     $variableValues = $request->json('variables', null);
     $operationName = $request->json('operationName', null);

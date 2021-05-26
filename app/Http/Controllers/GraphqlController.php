@@ -18,11 +18,17 @@ class GraphqlController extends Controller
             'node' => function ($root, $args, $context, ResolveInfo $info) {
                 return null;
             },
+            // This is made using my custom resolving logic which was trying
+            // to achieve same as typeConfigDecorator
             'records' => function ($root, $args, $context, ResolveInfo $info) {
                 return array_map(function ($record) use ($root, $args, $context, $info) {
                     return (new Record())->resolve((object)$record, $args, $context, $info);
                 }, Record::getRecords($args));
-            }
+            },
+            // This id made using the right way using typeConfigDecorator
+            'records_official' => function ($root, $args, $context) {
+                return Record::getRecords($args);
+            },
         ];
     }
 

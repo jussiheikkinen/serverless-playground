@@ -1,3 +1,35 @@
+"""
+
+query GetRecords {
+  records(genre: "pop") {
+   	name
+  }
+}
+
+query GetRecordsOfficial {
+  records_official(genre: "pop") {
+   	name
+    something
+  }
+}
+
+query GetRecordsOfficial {
+  records_official(genre: "pop") {
+   	name
+    something
+
+    # proof that the type resolved dynamically
+    thisRecord {
+      name
+      thisRecord {
+        name
+      }
+    }
+  }
+}
+
+"""
+
 interface Node {
     id: ID!
 }
@@ -10,6 +42,7 @@ schema {
 type Query {
     node(id: ID!): Node
     records(genre: String): [Record]
+    records_official(genre: String): [RecordOfficial]
     artists: [Artist]
 }
 
@@ -26,6 +59,21 @@ type Record implements Node {
     artist: Artist
     coverArt: String
     timestamp: Int
+}
+
+"""
+Same as Record but with type resolver
+"""
+type RecordOfficial implements Node {
+    id: ID!
+    name: String
+    artist: Artist
+    coverArt: String
+    timestamp: Int
+    thisRecord: RecordOfficial
+
+    # Example field that is not in data provided to type resolver
+    something: String
 }
 
 """
