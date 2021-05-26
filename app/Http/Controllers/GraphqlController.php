@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Log;
 
 class GraphqlController extends Controller
 {
+    /**
+     * Root query resolvers
+     */
     public static function getRootValues()
     {
         return [
@@ -23,6 +26,9 @@ class GraphqlController extends Controller
         ];
     }
 
+    /**
+     * Draft to resolve types automatically againt the data
+     */
     public static function dynamicFieldResolver($obj, $rootValue, $args, $context, $info, $typeName)
     {
         foreach(self::getSelectionSet($info, $typeName) as $fieldName => $val) {
@@ -40,12 +46,18 @@ class GraphqlController extends Controller
         return $obj;
     }
 
+    /**
+     * Get queried fields from provided type
+     */
     public static function getSelectionSet(ResolveInfo $info, $needle)
     {
         $values = self::array_find_recursively($needle, $info->getFieldSelection(10));
         return $values ?: $info->getFieldSelection();
     }
 
+    /**
+     * Search value from provided muultidimensional array
+     */
     public static function array_find_recursively($needle, $haystack)
     {
         foreach($haystack as $key => $value) {
@@ -61,6 +73,9 @@ class GraphqlController extends Controller
         return false;
     }
 
+    /**
+     * Read data from mock json file
+     */
     public static function getData()
     {
         try {
