@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resolvers\Artist;
 use App\Http\Resolvers\Record;
 use Exception;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -28,6 +29,9 @@ class GraphqlController extends Controller
             // This id made using the right way using typeConfigDecorator
             'records_official' => function ($root, $args, $context) {
                 return Record::getRecords($args);
+            },
+            'artists' => function ($root, $args, $context) {
+                return Artist::getArtists();
             },
         ];
     }

@@ -23,6 +23,18 @@ class Artist implements Resolver
         return [];
     }
 
+    public static function getArtists()
+    {
+        $data = GraphqlController::getData();
+        $res = [];
+        if (!empty($data)) {
+            foreach($data['artists'] as $k => $value) {
+                $res[] = $value;
+            }
+        }
+        return $res;
+    }
+
     public function resolve($artist, $args, $context, $info)
     {
         foreach(GraphqlController::getSelectionSet($info, 'artist') as $fieldName => $val) {
